@@ -24,3 +24,23 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeUp {
+  animation: fadeUp 1.2s ease-out;
+}
+@font-face {
+  font-family: 'Kapakana';
+  src: url('/fonts/Kapakana.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
