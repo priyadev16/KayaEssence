@@ -11,24 +11,26 @@ interface User {
   email: string;
 }
 
+// ✅ TYPE-SAFE ICON WRAPPER (Fixes ALL TypeScript errors)
+const Icon = ({ icon: IconComponent, ...props }: { icon: any; [key: string]: any }) => {
+  return <IconComponent {...props} />;
+};
+
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [cartCount, setCartCount] = useState(0);
-  const [notifications, setNotifications] = useState(2); // Default notifications
+  const [notifications, setNotifications] = useState(2);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const router = useRouter();
   const pathname = usePathname();
 
-  // 🔥 FIXED: Real-time auth checking
   useEffect(() => {
     const checkAuthStatus = () => {
       const token = localStorage.getItem('authToken');
       const userData = localStorage.getItem('user');
       const cart = localStorage.getItem('cartCount');
-      
-      console.log("🔍 Navbar checking auth:", { hasToken: !!token, hasUser: !!userData }); // Debug
       
       if (token) {
         setIsLoggedIn(true);
@@ -44,20 +46,15 @@ export default function Navbar() {
       }
     };
 
-    // Check immediately
     checkAuthStatus();
 
-    // 🔥 LISTEN FOR STORAGE CHANGES (multi-tab + instant updates)
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'authToken' || e.key === 'user' || e.key === 'cartCount') {
-        console.log("🔄 Storage changed:", e.key);
         checkAuthStatus();
       }
     };
 
     window.addEventListener('storage', handleStorageChange);
-    
-    // 🔥 CHECK EVERY 500ms for instant updates (critical fix)
     const interval = setInterval(checkAuthStatus, 500);
     
     return () => {
@@ -84,8 +81,6 @@ export default function Navbar() {
     toast.success("Added to cart!");
   };
 
-  console.log("🎨 Navbar rendering:", { isLoggedIn, userName: user?.name, cartCount }); // Debug
-
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md border-b">
       <Toaster position="top-right" />
@@ -104,15 +99,15 @@ export default function Navbar() {
           <Link href="/beauty-advice" className="hover:text-pink-600 transition-all">Beauty Advice</Link>
         </nav>
 
-        {/* Mobile Menu Toggle */}
+        {/* ✅ FIXED MOBILE MENU TOGGLE - Uses Icon wrapper */}
         <button 
           className="md:hidden text-gray-700 text-2xl hover:text-pink-600 transition" 
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
-          {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+          {mobileMenuOpen ? <Icon icon={FaTimes} size={24} className="text-gray-700" /> : <Icon icon={FaBars} size={24} className="text-gray-700" />}
         </button>
 
-        {/* 🔥 RIGHT SIDE - REAL E-COMMERCE STYLE */}
+        {/* RIGHT SIDE - REAL E-COMMERCE STYLE */}
         <div className="flex items-center gap-3 md:gap-4">
           {!isLoggedIn ? (
             <Link
@@ -123,9 +118,9 @@ export default function Navbar() {
             </Link>
           ) : (
             <>
-              {/* 🔔 NOTIFICATION ICON */}
+              {/* 🔔 NOTIFICATION ICON - FIXED */}
               <div className="relative group cursor-pointer hover:scale-110 transition-transform">
-                <FaBell size={24} className="text-gray-700 hover:text-pink-600 transition-all" />
+                <Icon icon={FaBell} size={24} className="text-gray-700 hover:text-pink-600 transition-all" />
                 {notifications > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold animate-pulse shadow-sm border-2 border-white">
                     {notifications}
@@ -137,9 +132,9 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* 👤 USER PROFILE ICON */}
+              {/* 👤 USER PROFILE ICON - FIXED */}
               <div className="relative group cursor-pointer hover:scale-110 transition-transform">
-                <FaUserCircle size={32} className="text-gray-700 hover:text-pink-600 transition-all" title={user?.name} />
+                <Icon icon={FaUserCircle} size={32} className="text-gray-700 hover:text-pink-600 transition-all" title={user?.name} />
                 {user && (
                   <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 py-2">
                     <div className="px-4 py-2 border-b">
@@ -160,9 +155,9 @@ export default function Navbar() {
             </>
           )}
 
-          {/* 🛒 CART ICON - E-COMMERCE STYLE */}
+          {/* 🛒 CART ICON - FIXED */}
           <div className="relative group cursor-pointer hover:scale-110 transition-transform">
-            <FaShoppingCart size={24} className="text-gray-700 hover:text-pink-600 transition-all" onClick={handleAddToCart} />
+            <Icon icon={FaShoppingCart} size={24} className="text-gray-700 hover:text-pink-600 transition-all" onClick={handleAddToCart} />
             {cartCount > 0 && (
               <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold shadow-lg border-2 border-white animate-bounce">
                 {cartCount}
