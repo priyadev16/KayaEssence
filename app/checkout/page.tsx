@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -8,14 +8,14 @@ import Image from "next/image";
 export default function CheckoutPage() {
   const searchParams = useSearchParams();
 
-  // Use URL path for local image in public folder
+  // Product info from URL or fallback
   const product = {
     id: searchParams.get("id") || "1",
     name: searchParams.get("name") || "Premium Makeup Product",
     brand: searchParams.get("brand") || "Top Brand",
     price: Number(searchParams.get("price") || 1299),
     quantity: 1,
-    image: searchParams.get("image") || "/images/lipstick.png", // ✅ public folder path
+    image: searchParams.get("image") || "/images/lipstick.png", // must exist in public/images/
   };
 
   const [step, setStep] = useState<"form" | "summary">("form");
@@ -57,7 +57,6 @@ export default function CheckoutPage() {
       {step === "form" && (
         <div className="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-lg space-y-6">
           <h2 className="text-2xl font-semibold mb-4">Shipping Details</h2>
-
           <input
             type="text"
             placeholder="Full Name"
@@ -78,7 +77,6 @@ export default function CheckoutPage() {
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
-
           <div className="flex flex-col md:flex-row gap-3">
             <input
               type="text"
@@ -146,9 +144,7 @@ export default function CheckoutPage() {
       {step === "summary" && (
         <div className="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-lg space-y-6">
           <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
-
           <div className="flex items-center gap-4 border-b pb-4">
-            {/* ✅ Local image from public folder */}
             <Image
               src={product.image}
               alt={product.name}
