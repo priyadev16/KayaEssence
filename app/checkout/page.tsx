@@ -2,8 +2,22 @@
 
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 export default function CheckoutPage() {
+  const searchParams = useSearchParams();
+
+  // Use URL path for local image in public folder
+  const product = {
+    id: searchParams.get("id") || "1",
+    name: searchParams.get("name") || "Premium Makeup Product",
+    brand: searchParams.get("brand") || "Top Brand",
+    price: Number(searchParams.get("price") || 1299),
+    quantity: 1,
+    image: searchParams.get("image") || "/images/lipstick.png", // ✅ public folder path
+  };
+
   const [step, setStep] = useState<"form" | "summary">("form");
 
   // Shipping & payment states
@@ -14,14 +28,6 @@ export default function CheckoutPage() {
   const [state, setState] = useState("");
   const [zip, setZip] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("card");
-
-  const product = {
-    id: 1,
-    name: "Matte Lipstick",
-    brand: "Maybelline",
-    price: 599,
-    quantity: 1,
-  };
 
   const handleConfirmAddress = () => {
     if (!name || !email || !address || !city || !state || !zip) {
@@ -73,7 +79,6 @@ export default function CheckoutPage() {
             onChange={(e) => setAddress(e.target.value)}
           />
 
-          {/* Responsive City / State / ZIP */}
           <div className="flex flex-col md:flex-row gap-3">
             <input
               type="text"
@@ -142,13 +147,19 @@ export default function CheckoutPage() {
         <div className="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-lg space-y-6">
           <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
 
-          <div className="flex justify-between border-b pb-4">
+          <div className="flex items-center gap-4 border-b pb-4">
+            {/* ✅ Local image from public folder */}
+            <Image
+              src={product.image}
+              alt={product.name}
+              width={80}
+              height={80}
+              className="rounded-lg object-cover border"
+            />
             <div>
               <p className="font-semibold">{product.name}</p>
               <p className="text-gray-500 text-sm">{product.brand}</p>
-            </div>
-            <div>
-              <p className="font-bold">₹{product.price}</p>
+              <p className="text-lg font-bold mt-1">₹{product.price}</p>
               <p className="text-gray-500 text-sm">Qty: {product.quantity}</p>
             </div>
           </div>
@@ -167,7 +178,7 @@ export default function CheckoutPage() {
           </div>
 
           <button
-            className="w-full py-4 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 mt-6"
+            className="w-full py-4 bg-pink-500 text-white rounded-xl font-semibold hover:bg-pink-600 mt-6"
             onClick={handlePlaceOrder}
           >
             Place Order
