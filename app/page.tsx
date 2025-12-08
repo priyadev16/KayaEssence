@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -20,10 +19,26 @@ interface BrandVideo { title: string; description: string; videoSrc: string; but
 
 export default function Home() {
   const slides: Slide[] = [
-    { img: "/images/slides/slide1.jpg", heading: "Spotless beauty for your healthy skin", subheading: "Pamper yourself with our skincare products for natural glow." },
-    { img: "/images/slides/slide2.jpg", heading: "Radiant Glow, Every Day", subheading: "Reveal the best version of your skin with our formulas." },
-    { img: "/images/slides/slide3.jpg", heading: "Modern Solutions for Timeless Beauty", subheading: "Experience revitalizing care adapted to your lifestyle." },
-    { img: "/images/slides/slide4.jpg", heading: "Pure Ingredients, Visible Results", subheading: "Trust in nature's best—gentle and effective skincare." },
+    {
+      img: "/images/slides/slide1.jpg",
+      heading: "Office‑ready glow with 5X hydration",
+      subheading: "Body scrubs crafted to exfoliate gently and reveal soft, luminous skin.",
+    },
+    {
+      img: "/images/slides/slide2.jpg",
+      heading: "Radiant Glow, Every Day",
+      subheading: "Daily rituals powered by clean, skin‑loving ingredients.",
+    },
+    {
+      img: "/images/slides/slide3.jpg",
+      heading: "Modern Solutions for Timeless Beauty",
+      subheading: "Targeted actives for smooth, even‑toned skin.",
+    },
+    {
+      img: "/images/slides/slide4.jpg",
+      heading: "Pure Ingredients, Visible Results",
+      subheading: "No harsh chemicals, only what your skin truly needs.",
+    },
   ];
 
   const spotlight: Spotlight[] = [
@@ -71,63 +86,68 @@ export default function Home() {
 
   return (
     <div className="bg-zinc-50 min-h-screen">
-      {/* ✅ BULLETPROOF HERO SLIDER */}
-      <div className="relative h-screen w-full overflow-hidden">
-        <Swiper
-          modules={[Autoplay, Pagination]}
-          autoplay={{ delay: 4000, disableOnInteraction: false }}
-          pagination={{ clickable: true }}
-          loop
-          className="h-full w-full"
-          style={{ height: '100vh' }}
-        >
-          {slides.map((slide, i) => (
-            <SwiperSlide key={i}>
-              <div className="relative h-screen w-full flex items-center justify-center">
-                <div className="absolute inset-0 w-full h-full">
-                  <Image
-                    src={slide.img}
-                    alt={slide.heading}
-                    fill
-                    sizes="100vw"
-                    priority={i === 0}
-                    className="object-cover object-center !brightness-75 w-full h-full"
-                    style={{
-                      objectFit: 'cover',
-                      objectPosition: 'center'
-                    }}
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/40 to-black/80" />
-                <div className="relative z-20 text-center text-white px-4 sm:px-6 lg:px-12 max-w-5xl mx-auto w-full flex flex-col items-center justify-center h-full py-12">
-                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 sm:mb-8 drop-shadow-2xl leading-tight">
-                    {slide.heading}
-                  </h1>
-                  <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl mb-12 sm:mb-16 drop-shadow-xl max-w-2xl mx-auto leading-relaxed">
-                    {slide.subheading}
-                  </p>
-                  {i === 0 && (
-                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
-                      <Link href="/categories">
-                        <button className="bg-white text-pink-600 px-8 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg sm:text-xl hover:bg-pink-50 hover:shadow-2xl transition-all duration-500 shadow-xl">
-                          🛒 Shop Now
-                        </button>
-                      </Link>
-                      <Link href="/about">
-                        <button className="border-4 border-white/90 text-white px-8 py-4 sm:px-10 sm:py-5 rounded-full font-bold text-lg sm:text-xl hover:bg-white hover:text-pink-600 transition-all duration-500 backdrop-blur-xl shadow-2xl">
-                          Discover More
-                        </button>
-                      </Link>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+      {/* HERO: wide banner with text + CTA */}
+      <section className="w-full bg-zinc-50 py-4 sm:py-6">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="relative w-full h-[280px] sm:h-[340px] lg:h-[400px] rounded-3xl overflow-hidden bg-white shadow-md">
+            <Swiper
+              modules={[Autoplay, Pagination, Navigation]}
+              autoplay={{ delay: 4000, disableOnInteraction: false }}
+              pagination={{ clickable: true }}
+              navigation
+              loop
+              className="w-full h-full"
+            >
+              {slides.map((slide, i) => (
+                <SwiperSlide key={i}>
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={slide.img}
+                      alt={slide.heading}
+                      fill
+                      sizes="100vw"
+                      // move the crop slightly down so the pink scrub top is visible
+                      className="object-cover"
+                      style={{ objectPosition: "center 40%" }}
+                    />
 
-      {/* ✅ PERFECT PROMO BANNER */}
+                    {/* text + CTA overlay on left side */}
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="px-6 sm:px-10 lg:px-16 w-full flex">
+                        <div className="max-w-xl bg-black/35 sm:bg-black/30 text-white rounded-2xl sm:rounded-3xl px-4 py-4 sm:px-6 sm:py-5 backdrop-blur-sm">
+                          <p className="inline-block mb-2 text-[11px] sm:text-xs font-semibold bg-white/85 text-pink-600 px-3 py-1 rounded-full">
+                            NEW • BODY SCRUB RANGE
+                          </p>
+                          <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold leading-snug">
+                            {slide.heading}
+                          </h1>
+                          <p className="mt-2 text-xs sm:text-sm lg:text-base text-white/90">
+                            {slide.subheading}
+                          </p>
+                          <div className="mt-4 flex flex-wrap gap-3">
+                            <Link href="/products">
+                              <button className="bg-white text-pink-600 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold shadow-md hover:bg-pink-50 transition">
+                                Shop Body Scrubs
+                              </button>
+                            </Link>
+                            <Link href="/categories">
+                              <button className="bg-transparent border border-white/80 text-white px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold hover:bg-white/10 transition">
+                                View All Offers
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
+      </section>
+
+      {/* PROMO BANNER */}
       <section className="container mx-auto py-20 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           <div className="lg:col-span-2">
@@ -161,7 +181,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ✅ PERFECT CATEGORIES */}
+      {/* CATEGORIES */}
       <section className="container mx-auto py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-gray-50/50">
         <div className="text-center mb-16 lg:mb-20">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 bg-gradient-to-r from-pink-600 via-purple-600 to-rose-600 bg-clip-text text-transparent">
@@ -171,11 +191,15 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-8">
           {categories.map((cat, i) => (
-            <Link key={i} href="/categories" className="group relative block h-48 sm:h-56 lg:h-64 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer">
-              <Image 
-                src={cat.img} 
-                alt={cat.title} 
-                fill 
+            <Link
+              key={i}
+              href="/categories"
+              className="group relative block h-48 sm:h-56 lg:h-64 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer"
+            >
+              <Image
+                src={cat.img}
+                alt={cat.title}
+                fill
                 className="object-cover group-hover:scale-110 transition-transform duration-700 brightness-100 group-hover:brightness-105"
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                 priority={i < 3}
@@ -191,7 +215,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ✅ PERFECT FEATURED PRODUCTS */}
+      {/* FEATURED PRODUCTS */}
       <section className="container mx-auto py-20 px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 lg:mb-20">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
@@ -199,19 +223,19 @@ export default function Home() {
           </h2>
           <p className="text-xl text-gray-600">Discover our best sellers</p>
         </div>
-        <Swiper 
-          modules={[Navigation, Pagination, Autoplay]} 
-          navigation 
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
+          navigation
           pagination={{ clickable: true }}
           autoplay={{ delay: 3000, disableOnInteraction: false }}
-          loop 
+          loop
           spaceBetween={24}
           slidesPerView={1.2}
           breakpoints={{
             640: { slidesPerView: 2, spaceBetween: 24 },
             768: { slidesPerView: 2.5, spaceBetween: 24 },
             1024: { slidesPerView: 3.5, spaceBetween: 24 },
-            1280: { slidesPerView: 4, spaceBetween: 32 }
+            1280: { slidesPerView: 4, spaceBetween: 32 },
           }}
           className="max-w-7xl mx-auto"
         >
@@ -223,12 +247,18 @@ export default function Home() {
         </Swiper>
       </section>
 
-      {/* ✅ SALE BANNER */}
+      {/* SALE BANNER */}
       <section className="container mx-auto py-16 px-4 sm:px-6 lg:px-8">
-        <div className={`relative bg-gradient-to-r ${saleBanner.bgGradient} rounded-4xl p-8 sm:p-12 lg:p-16 text-white text-center lg:text-left shadow-2xl overflow-hidden`}>
+        <div
+          className={`relative bg-gradient-to-r ${saleBanner.bgGradient} rounded-4xl p-8 sm:p-12 lg:p-16 text-white text-center lg:text-left shadow-2xl overflow-hidden`}
+        >
           <div className="lg:max-w-lg mb-8 lg:mb-0 lg:pr-12">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 leading-tight">{saleBanner.title}</h2>
-            <p className="text-lg sm:text-xl mb-8 opacity-95 leading-relaxed">{saleBanner.subtitle}</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 leading-tight">
+              {saleBanner.title}
+            </h2>
+            <p className="text-lg sm:text-xl mb-8 opacity-95 leading-relaxed">
+              {saleBanner.subtitle}
+            </p>
             <Link href={saleBanner.buttonLink}>
               <button className="bg-white text-pink-600 px-8 py-4 rounded-3xl font-bold text-lg sm:text-xl hover:shadow-2xl hover:scale-105 transition-all duration-400 shadow-xl inline-flex items-center gap-2">
                 🛒 {saleBanner.buttonText} →
@@ -239,14 +269,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ✅ BRAND VIDEO - NO PLAY ICON */}
+      {/* BRAND VIDEO */}
       <section className="container mx-auto py-20 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="order-2 lg:order-1">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-6 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent leading-tight">
               {brandVideo.title}
             </h2>
-            <p className="text-lg sm:text-xl text-gray-600 mb-8 lg:mb-10 leading-relaxed max-w-lg">{brandVideo.description}</p>
+            <p className="text-lg sm:text-xl text-gray-600 mb-8 lg:mb-10 leading-relaxed max-w-lg">
+              {brandVideo.description}
+            </p>
             <Link href={brandVideo.buttonLink}>
               <button className="bg-gradient-to-r from-pink-600 to-purple-600 text-white px-8 py-4 sm:px-10 sm:py-4 rounded-3xl font-bold text-lg sm:text-xl hover:shadow-2xl hover:scale-105 transition-all duration-400 shadow-xl">
                 {brandVideo.buttonText} →
@@ -255,12 +287,12 @@ export default function Home() {
           </div>
           <div className="order-1 lg:order-2 relative">
             <div className="relative w-full h-72 sm:h-80 lg:h-[400px] rounded-4xl overflow-hidden shadow-2xl">
-              <video 
-                src={brandVideo.videoSrc} 
-                className="w-full h-full object-cover rounded-4xl" 
-                autoPlay 
-                muted 
-                loop 
+              <video
+                src={brandVideo.videoSrc}
+                className="w-full h-full object-cover rounded-4xl"
+                autoPlay
+                muted
+                loop
                 playsInline
                 poster="/images/placeholder-video.jpg"
               />
@@ -270,20 +302,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ✅ TESTIMONIALS */}
+      {/* TESTIMONIALS */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16 lg:mb-20">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
               Loved by Thousands
             </h2>
-            <p className="text-xl text-gray-600 max-w-xl mx-auto">Don't just take our word for it</p>
+            <p className="text-xl text-gray-600 max-w-xl mx-auto">
+              Don't just take our word for it
+            </p>
           </div>
-          <Swiper 
-            modules={[Autoplay, Pagination]} 
+          <Swiper
+            modules={[Autoplay, Pagination]}
             autoplay={{ delay: 5000, disableOnInteraction: false }}
             pagination={{ clickable: true }}
-            loop 
+            loop
             spaceBetween={24}
             slidesPerView={1}
             breakpoints={{
@@ -295,19 +329,27 @@ export default function Home() {
             {testimonials.map((t, i) => (
               <SwiperSlide key={i}>
                 <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-400 h-72 sm:h-80 flex flex-col justify-between">
-                  <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-6">"{t.text}"</p>
+                  <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-6">
+                    "{t.text}"
+                  </p>
                   <div className="flex items-center gap-4">
-                    <Image 
-                      src={t.avatar} 
-                      alt={t.name} 
-                      width={56} 
-                      height={56} 
+                    <Image
+                      src={t.avatar}
+                      alt={t.name}
+                      width={56}
+                      height={56}
                       className="rounded-full object-cover shadow-lg w-14 h-14 sm:w-16 sm:h-16"
                     />
                     <div>
-                      <p className="font-bold text-lg sm:text-xl text-gray-900">{t.name}</p>
-                      <p className="text-gray-500 text-sm sm:text-base">{t.role}</p>
-                      <div className="flex gap-1 text-yellow-400 text-lg mt-1">{"★".repeat(t.rating)}</div>
+                      <p className="font-bold text-lg sm:text-xl text-gray-900">
+                        {t.name}
+                      </p>
+                      <p className="text-gray-500 text-sm sm:text-base">
+                        {t.role}
+                      </p>
+                      <div className="flex gap-1 text-yellow-400 text-lg mt-1">
+                        {"★".repeat(t.rating)}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -320,7 +362,6 @@ export default function Home() {
   );
 }
 
-// ✅ PERFECT FEATURED CARD
 function FeaturedCard({ product }: { product: FeaturedProduct }) {
   return (
     <div className="group bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-3 transition-all duration-500 h-full max-w-sm mx-auto border border-white/50 hover:border-pink-200/50">
@@ -330,22 +371,33 @@ function FeaturedCard({ product }: { product: FeaturedProduct }) {
             {product.discount}
           </span>
         )}
-        <Image 
-          src={product.img} 
-          alt={product.name} 
-          fill 
+        <Image
+          src={product.img}
+          alt={product.name}
+          fill
           className="object-contain group-hover:scale-105 transition-transform duration-500 mx-auto max-h-48"
           sizes="(max-width: 640px) 100vw, 25vw"
         />
       </div>
       <div className="p-6">
         {product.oldPrice && (
-          <p className="text-sm text-gray-400 line-through mb-1 font-medium">₹{product.oldPrice}</p>
+          <p className="text-sm text-gray-400 line-through mb-1 font-medium">
+            ₹{product.oldPrice}
+          </p>
         )}
-        <p className="text-2xl font-black text-gray-900 mb-2 leading-tight">{product.price}</p>
-        <h3 className="font-bold text-lg sm:text-xl text-gray-900 mb-4 line-clamp-2 group-hover:text-pink-600 transition-colors">{product.name}</h3>
-        <div className="flex justify-center mb-6 text-yellow-400 text-2xl">★★★★★</div>
-        <Link href="/products" className="block w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white py-3 px-6 rounded-2xl font-bold text-sm sm:text-base hover:shadow-2xl hover:scale-105 transition-all duration-400 shadow-xl text-center">
+        <p className="text-2xl font-black text-gray-900 mb-2 leading-tight">
+          {product.price}
+        </p>
+        <h3 className="font-bold text-lg sm:text-xl text-gray-900 mb-4 line-clamp-2 group-hover:text-pink-600 transition-colors">
+          {product.name}
+        </h3>
+        <div className="flex justify-center mb-6 text-yellow-400 text-2xl">
+          ★★★★★
+        </div>
+        <Link
+          href="/products"
+          className="block w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white py-3 px-6 rounded-2xl font-bold text-sm sm:text-base hover:shadow-2xl hover:scale-105 transition-all duration-400 shadow-xl text-center"
+        >
           Add to Cart →
         </Link>
       </div>
